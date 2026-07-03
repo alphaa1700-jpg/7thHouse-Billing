@@ -51,11 +51,11 @@ function SalesChart({ data, fmtHour }: {
           top:  Math.max(0, tooltip.y - 44),
           background:"#1a0e06", border:"1px solid rgba(200,135,74,0.6)",
           borderRadius:8, padding:"5px 11px", fontSize:12,
-          color:"#2c1a0e", fontWeight:600, zIndex:20,
+          color:"var(--c-cream)", fontWeight:600, zIndex:20,
           whiteSpace:"nowrap", pointerEvents:"none",
           boxShadow:"0 4px 20px rgba(0,0,0,0.5)",
         }}>
-          <span style={{ color:"#C8761A", marginRight:4 }}>{fmtHour(tooltip.hour)}</span>
+          <span style={{ color:"var(--c-c200)", marginRight:4 }}>{fmtHour(tooltip.hour)}</span>
           ₹{tooltip.revenue.toLocaleString("en-IN")}
         </div>
       )}
@@ -66,12 +66,12 @@ function SalesChart({ data, fmtHour }: {
       >
         <defs>
           <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stopColor="#C8761A" stopOpacity="0.35"/>
-            <stop offset="100%" stopColor="#C8761A" stopOpacity="0.02"/>
+            <stop offset="0%"   stopColor="var(--c-c200)" stopOpacity="0.35"/>
+            <stop offset="100%" stopColor="var(--c-c200)" stopOpacity="0.02"/>
           </linearGradient>
           <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%"   stopColor="#E8A45A"/>
-            <stop offset="100%" stopColor="#C8761A"/>
+            <stop offset="100%" stopColor="var(--c-c200)"/>
           </linearGradient>
           <filter id="glow">
             <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
@@ -85,7 +85,7 @@ function SalesChart({ data, fmtHour }: {
               <line x1={padL} y1={y} x2={W - padR} y2={y}
                 stroke={v === 0 ? "#3a2510" : "#1e1008"} strokeWidth={1} strokeDasharray={v > 0 ? "3,4" : ""}/>
               <text x={padL - 4} y={y + 3.5} textAnchor="end"
-                style={{ fontSize:9, fill:"#6b4a2a", fontFamily:"DM Sans,sans-serif" }}>
+                style={{ fontSize:9, fill:"var(--c-faint)", fontFamily:"DM Sans,sans-serif" }}>
                 {v >= 1000 ? `₹${(v/1000).toFixed(1)}k` : `₹${v}`}
               </text>
             </g>
@@ -102,7 +102,7 @@ function SalesChart({ data, fmtHour }: {
         {points.map((p, i) => (
           i % 3 === 0 && (
             <text key={i} x={p.x} y={H - 4} textAnchor="middle"
-              style={{ fontSize:8, fill: p.revenue > 0 ? "#C8761A" : "#6B4E35", fontFamily:"DM Sans,sans-serif", fontWeight: p.revenue > 0 ? 600 : 400 }}>
+              style={{ fontSize:8, fill: p.revenue > 0 ? "var(--c-c200)" : "#6B4E35", fontFamily:"DM Sans,sans-serif", fontWeight: p.revenue > 0 ? 600 : 400 }}>
               {fmtHour(p.hour)}
             </text>
           )
@@ -114,7 +114,7 @@ function SalesChart({ data, fmtHour }: {
             )}
             <circle
               cx={p.x} cy={p.y} r={tooltip?.hour === p.hour ? 5 : 4}
-              fill={tooltip?.hour === p.hour ? "#FFD09B" : "#C8761A"}
+              fill={tooltip?.hour === p.hour ? "#FFD09B" : "var(--c-c200)"}
               stroke="#1a0e06" strokeWidth={2}
               style={{ cursor:"pointer", transition:"r 0.15s" }}
               onMouseEnter={() => setTooltip({ ...p })}
@@ -131,11 +131,11 @@ function SalesChart({ data, fmtHour }: {
         const peak = [...data].sort((a,b) => b.revenue - a.revenue)[0];
         return (
           <div style={{ display:"flex", justifyContent:"space-between", marginTop:2, padding:"6px 0 0", borderTop:"1px solid #2a1a0e" }}>
-            <div style={{ fontSize:11, color:"#6b4a2a" }}>
-              <span style={{ color:"#C8761A", fontWeight:600 }}>Peak: </span>
+            <div style={{ fontSize:11, color:"var(--c-faint)" }}>
+              <span style={{ color:"var(--c-c200)", fontWeight:600 }}>Peak: </span>
               {fmtHour(peak.hour)} · ₹{peak.revenue.toLocaleString("en-IN")}
             </div>
-            <div style={{ fontSize:11, color:"#6b4a2a" }}>
+            <div style={{ fontSize:11, color:"var(--c-faint)" }}>
               {activeData.length} active hour{activeData.length !== 1 ? "s" : ""}
             </div>
           </div>
@@ -206,7 +206,7 @@ export function DashboardPage({ orders, allOrdersToday, stockItems, staffOnDuty 
   const criticalCount = stockItems.filter(s => s.status === "Critical").length;
   const activeCount  = staffOnDuty.filter(m => m.onDuty).length;
   const EmptyState = ({ icon, text }: { icon: string; text: string }) => (
-    <div style={{ padding:"24px 0", textAlign:"center", color:"#6b4a2a", fontSize:13 }}>
+    <div style={{ padding:"24px 0", textAlign:"center", color:"var(--c-faint)", fontSize:13 }}>
       <i className={`ti ${icon}`} style={{ fontSize:28, display:"block", marginBottom:6, opacity:0.6 }}/>
       {text}
     </div>
@@ -220,14 +220,14 @@ export function DashboardPage({ orders, allOrdersToday, stockItems, staffOnDuty 
           <div className="metric-card__value">
             {totalRevenue > 0 ? `₹${totalRevenue.toLocaleString("en-IN")}` : "₹0"}
           </div>
-          <div className="metric-card__delta" style={{ color: totalRevenue > 0 ? "#4CAF50" : "#6b4a2a" }}>
+          <div className="metric-card__delta" style={{ color: totalRevenue > 0 ? "var(--c-green)" : "var(--c-faint)" }}>
             {totalRevenue > 0 ? `From ${totalOrders} order${totalOrders !== 1 ? "s" : ""} today` : "No orders yet"}
           </div>
         </div>
         <div className="metric-card animate-card" style={{ animationDelay:"0.1s", opacity:0 }}>
           <div className="metric-card__label">Daily Active Orders</div>
           <div className="metric-card__value">{activeOrders}</div>
-          <div className="metric-card__delta" style={{ color: activeOrders > 0 ? "#EF9F27" : "#6b4a2a" }}>
+          <div className="metric-card__delta" style={{ color: activeOrders > 0 ? "var(--c-amber)" : "var(--c-faint)" }}>
             {activeOrders > 0
               ? `${prepCount} in prep · ${readyCount} ready`
               : "No active orders"}
@@ -238,7 +238,7 @@ export function DashboardPage({ orders, allOrdersToday, stockItems, staffOnDuty 
           <div className="metric-card__value">
             {avgBill > 0 ? `₹${avgBill}` : "₹0"}
           </div>
-          <div className="metric-card__delta" style={{ color: avgBill > 0 ? "#4CAF50" : "#6b4a2a" }}>
+          <div className="metric-card__delta" style={{ color: avgBill > 0 ? "var(--c-green)" : "var(--c-faint)" }}>
             {avgBill > 0 ? "Per order average" : "No orders yet"}
           </div>
         </div>
@@ -247,7 +247,7 @@ export function DashboardPage({ orders, allOrdersToday, stockItems, staffOnDuty 
           <div className="metric-card__value">
             {Object.values(itemMap).reduce((s, i) => s + i.orders, 0)}
           </div>
-          <div className="metric-card__delta" style={{ color: trendingItems.length > 0 ? "#4CAF50" : "#6b4a2a" }}>
+          <div className="metric-card__delta" style={{ color: trendingItems.length > 0 ? "var(--c-green)" : "var(--c-faint)" }}>
             {trendingItems.length > 0 ? `${trendingItems.length} unique items` : "No items yet"}
           </div>
         </div>
@@ -258,7 +258,7 @@ export function DashboardPage({ orders, allOrdersToday, stockItems, staffOnDuty 
             <div className="card__title">Live Orders</div>
             <div className="flex items-center gap-2">
               <div className="live-dot"/>
-              <span style={{ fontSize:11, color:"#4CAF50", fontFamily:"DM Sans,sans-serif" }}>Live</span>
+              <span style={{ fontSize:11, color:"var(--c-green)", fontFamily:"DM Sans,sans-serif" }}>Live</span>
             </div>
           </div>
           {liveOrders.length === 0
@@ -270,7 +270,7 @@ export function DashboardPage({ orders, allOrdersToday, stockItems, staffOnDuty 
           <div className="card animate-card" style={{ animationDelay:"0.28s", opacity:0 }}>
             <div className="card__head">
               <div className="card__title">Today's Sales</div>
-              <span style={{ fontSize:11, color: totalRevenue > 0 ? "#C8761A" : "#6b4a2a", fontFamily:"DM Sans,sans-serif", fontWeight:600 }}>
+              <span style={{ fontSize:11, color: totalRevenue > 0 ? "var(--c-c200)" : "var(--c-faint)", fontFamily:"DM Sans,sans-serif", fontWeight:600 }}>
                 {totalRevenue > 0 ? `₹${totalRevenue.toLocaleString("en-IN")} total` : "by hour"}
               </span>
             </div>
@@ -319,7 +319,7 @@ export function DashboardPage({ orders, allOrdersToday, stockItems, staffOnDuty 
               <tbody>
                 {trendingItems.map((item, i) => (
                   <tr key={item.name}>
-                    <td style={{ color:"#2c1a0e", fontWeight:500 }}>{item.name}</td>
+                    <td style={{ color:"var(--c-cream)", fontWeight:500 }}>{item.name}</td>
                     <td>{item.orders}</td>
                     <td>₹{item.revenue.toLocaleString("en-IN")}</td>
                     <td>

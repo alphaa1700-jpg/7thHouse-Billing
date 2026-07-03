@@ -18,3 +18,10 @@ html, body {
 ::-webkit-scrollbar       { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #c8ad88; border-radius: 9px; }
+
+[data-theme="coffee"] {
+  background: #1a0f08;
+  color: #F5DFB8;
+}
+
+[data-theme="coffee"] ::-webkit-scrollbar-thumb { background: #3a2010; }

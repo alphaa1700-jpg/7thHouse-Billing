@@ -12,9 +12,9 @@ interface TablesPageProps {
   onNewOrder:  (tableId: string) => void;
 }
 const STATUS_CONFIG = {
-  available: { label:"Available", badge:"green"  as const, dot:"#4CAF50" },
-  occupied:  { label:"Occupied",  badge:"amber"  as const, dot:"#EF9F27" },
-  cleaning:  { label:"Cleaning",  badge:"gray"   as const, dot:"#6b4a2a" },
+  available: { label:"Available", badge:"green"  as const, dot:"var(--c-green)" },
+  occupied:  { label:"Occupied",  badge:"amber"  as const, dot:"var(--c-amber)" },
+  cleaning:  { label:"Cleaning",  badge:"gray"   as const, dot:"var(--c-faint)" },
 };
 function TableShape({ table, onClick, isSelected }: { table: CafeTable; onClick: () => void; isSelected: boolean }) {
   const cfg = STATUS_CONFIG[table.status as keyof typeof STATUS_CONFIG] ?? STATUS_CONFIG.available;
@@ -153,7 +153,7 @@ function SessionDrawer({ table, onClose, onClear, onReady, onAddItems }: {
           <div className="flex flex-col gap-2">
             {(session.status === "occupied" || session.status === "ready") && (
               <Button variant="tab" onClick={onAddItems} className="w-full justify-center"
-                style={{ color: "#C8761A", borderColor: "rgba(200,135,74,0.3)" }}>
+                style={{ color: "var(--c-c200)", borderColor: "rgba(200,135,74,0.3)" }}>
                 <i className="ti ti-plus mr-1"/>Add More Items
               </Button>
             )}
@@ -163,13 +163,13 @@ function SessionDrawer({ table, onClose, onClear, onReady, onAddItems }: {
               </Button>
             )}
             {sending === "sent" && (
-              <div style={{padding:"10px 14px", borderRadius:8, fontSize:13, fontWeight:600,background:"#d4edda", color:"#2e7d32",border:"1px solid rgba(76,175,80,0.3)", display:"flex", alignItems:"center", gap:8,}}>
+              <div style={{padding:"10px 14px", borderRadius:8, fontSize:13, fontWeight:600,background:"#d4edda", color:"var(--c-green)",border:"1px solid rgba(76,175,80,0.3)", display:"flex", alignItems:"center", gap:8,}}>
                 <i className="ti ti-brand-whatsapp" style={{fontSize:18}}/>
                 Bill sent to {session.phone} ✓ — clearing table…
               </div>
             )}
             {sending === "failed" && (
-              <div style={{padding:"10px 14px", borderRadius:8, fontSize:12,background:"#fde8e8", color:"#c0392b", border:"1px solid rgba(226,75,74,0.25)", display:"flex", alignItems:"center", gap:8,}}>
+              <div style={{padding:"10px 14px", borderRadius:8, fontSize:12,background:"#fde8e8", color:"var(--c-red)", border:"1px solid rgba(226,75,74,0.25)", display:"flex", alignItems:"center", gap:8,}}>
                 <i className="ti ti-alert-triangle" style={{fontSize:16}}/>
                 WhatsApp failed — check Twilio config. Table still cleared.
               </div>
@@ -179,7 +179,7 @@ function SessionDrawer({ table, onClose, onClear, onReady, onAddItems }: {
               onClick={handleBillPaid}
               disabled={sending === "sending" || sending === "sent"}
               className="w-full justify-center"
-              style={{ color:"#2e7d32", borderColor:"#a8d5b5",
+              style={{ color:"var(--c-green)", borderColor:"#a8d5b5",
                 opacity: (sending === "sending" || sending === "sent") ? 0.7 : 1 }}
             >
               {sending === "sending" ? (
@@ -209,9 +209,9 @@ export function TablesPage({ tables, onClearTable, onMarkReady, onAddItems, onNe
       <SectionTitle>Tables</SectionTitle>
       <div className="tables-stat-row">
         {[
-          { label:"Available", val: stats.available, color:"#2e7d32", icon:"ti-circle-check" },
-          { label:"Occupied",  val: stats.occupied,  color:"#EF9F27", icon:"ti-users"        },
-          { label:"Cleaning",  val: stats.cleaning,  color:"#6b4a2a", icon:"ti-wash"         },
+          { label:"Available", val: stats.available, color:"var(--c-green)", icon:"ti-circle-check" },
+          { label:"Occupied",  val: stats.occupied,  color:"var(--c-amber)", icon:"ti-users"        },
+          { label:"Cleaning",  val: stats.cleaning,  color:"var(--c-faint)", icon:"ti-wash"         },
         ].map(s => (
           <div key={s.label} className="tables-stat-pill">
             <i className={`ti ${s.icon} tables-stat-pill__icon`} style={{ color: s.color }}/>

@@ -15,7 +15,7 @@ interface StaffPageProps {
 function now():   string { return new Date().toLocaleTimeString("en-IN", { hour:"2-digit", minute:"2-digit" }); }
 function today(): string { return new Date().toLocaleDateString("en-IN"); }
 
-const COLORS = ["#C8761A","#4472a0","#3B6D11","#2c1a0e","#993556","#2a7a6a","#7a4a99","#996a2a"];
+const COLORS = ["var(--c-c200)","#4472a0","#3B6D11","var(--c-cream)","#993556","#2a7a6a","#7a4a99","#996a2a"];
 
 // ── Add Staff Modal ────────────────────────────────────────────────────────
 function AddStaffModal({ onAdd, onClose }: { onAdd:(m:StaffEntry)=>void; onClose:()=>void }) {
@@ -79,12 +79,12 @@ function AddStaffModal({ onAdd, onClose }: { onAdd:(m:StaffEntry)=>void; onClose
                 display:"flex", alignItems:"center", justifyContent:"center",
                 position:"relative", transition:"border-color 0.2s",
               }}
-              onMouseEnter={e=>(e.currentTarget.style.borderColor="#C8761A")}
+              onMouseEnter={e=>(e.currentTarget.style.borderColor="var(--c-c200)")}
               onMouseLeave={e=>(e.currentTarget.style.borderColor="#3a2510")}
             >
               {imageUrl
                 ? <img src={imageUrl} alt="preview" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
-                : <i className="ti ti-camera" style={{fontSize:22,color:"#2c1a0e"}}/>
+                : <i className="ti ti-camera" style={{fontSize:22,color:"var(--c-cream)"}}/>
               }
               {imageUrl && (
                 <div style={{
@@ -100,47 +100,47 @@ function AddStaffModal({ onAdd, onClose }: { onAdd:(m:StaffEntry)=>void; onClose
               )}
             </div>
             <input ref={fileRef} type="file" accept="image/*" style={{display:"none"}} onChange={handleImageChange}/>
-            <span style={{fontSize:11,color:"#2c1a0e"}}>Upload photo (optional)</span>
+            <span style={{fontSize:11,color:"var(--c-cream)"}}>Upload photo (optional)</span>
           </div>
 
           {/* First / Last name row */}
           <div className="flex gap-2">
             <div style={{flex:1}}>
-              <label className="block mb-1" style={{fontSize:12,color:"#2c1a0e"}}>First Name *</label>
+              <label className="block mb-1" style={{fontSize:12,color:"var(--c-cream)"}}>First Name *</label>
               <Input value={firstName} onChange={e=>setFirstName(e.target.value)} placeholder="Aisha" className="w-full"/>
-              {errors.firstName && <div style={{fontSize:11,color:"#E24B4A",marginTop:3}}>{errors.firstName}</div>}
+              {errors.firstName && <div style={{fontSize:11,color:"var(--c-red)",marginTop:3}}>{errors.firstName}</div>}
             </div>
             <div style={{flex:1}}>
-              <label className="block mb-1" style={{fontSize:12,color:"#2c1a0e"}}>Last Name *</label>
+              <label className="block mb-1" style={{fontSize:12,color:"var(--c-cream)"}}>Last Name *</label>
               <Input value={lastName} onChange={e=>setLastName(e.target.value)} placeholder="Khan" className="w-full"/>
-              {errors.lastName && <div style={{fontSize:11,color:"#E24B4A",marginTop:3}}>{errors.lastName}</div>}
+              {errors.lastName && <div style={{fontSize:11,color:"var(--c-red)",marginTop:3}}>{errors.lastName}</div>}
             </div>
           </div>
 
           {/* Phone */}
           <div>
-            <label className="block mb-1" style={{fontSize:12,color:"#2c1a0e"}}>Phone Number</label>
+            <label className="block mb-1" style={{fontSize:12,color:"var(--c-cream)"}}>Phone Number</label>
             <Input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+91 98765 43210" className="w-full" type="tel"/>
-            {errors.phone && <div style={{fontSize:11,color:"#E24B4A",marginTop:3}}>{errors.phone}</div>}
+            {errors.phone && <div style={{fontSize:11,color:"var(--c-red)",marginTop:3}}>{errors.phone}</div>}
           </div>
 
           {/* Role */}
           <div>
-            <label className="block mb-1" style={{fontSize:12,color:"#2c1a0e"}}>Role *</label>
+            <label className="block mb-1" style={{fontSize:12,color:"var(--c-cream)"}}>Role *</label>
             <Input value={role} onChange={e=>setRole(e.target.value)} placeholder="e.g. Barista, Cashier, Supervisor" className="w-full"/>
-            {errors.role && <div style={{fontSize:11,color:"#E24B4A",marginTop:3}}>{errors.role}</div>}
+            {errors.role && <div style={{fontSize:11,color:"var(--c-red)",marginTop:3}}>{errors.role}</div>}
           </div>
 
           {/* Shift */}
           <div>
-            <label className="block mb-1" style={{fontSize:12,color:"#2c1a0e"}}>Shift</label>
+            <label className="block mb-1" style={{fontSize:12,color:"var(--c-cream)"}}>Shift</label>
             <div className="flex gap-2">
               {(["Shift A","Shift B"] as const).map(s => (
                 <button key={s} onClick={()=>setShift(s)} style={{
                   flex:1, padding:"8px 0", borderRadius:8, fontSize:13, fontWeight:600,
                   border: shift===s ? "1.5px solid #C8874A" : "1.5px solid #3a2510",
                   background: shift===s ? "rgba(200,135,74,0.15)" : "rgba(30,18,10,0.5)",
-                  color: shift===s ? "#C8761A" : "#4a3020", cursor:"pointer",
+                  color: shift===s ? "var(--c-c200)" : "var(--c-muted)", cursor:"pointer",
                 }}>{s}</button>
               ))}
             </div>
@@ -191,24 +191,24 @@ function EditStaffModal({ member, onSave, onClose }: {
         </div>
         <div className="flex flex-col gap-3 mt-2">
           <div>
-            <label className="block mb-1" style={{fontSize:12,color:"#2c1a0e"}}>Full Name *</label>
+            <label className="block mb-1" style={{fontSize:12,color:"var(--c-cream)"}}>Full Name *</label>
             <Input value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Aisha Khan" className="w-full"/>
-            {errors.name && <div style={{fontSize:11,color:"#E24B4A",marginTop:3}}>{errors.name}</div>}
+            {errors.name && <div style={{fontSize:11,color:"var(--c-red)",marginTop:3}}>{errors.name}</div>}
           </div>
           <div>
-            <label className="block mb-1" style={{fontSize:12,color:"#2c1a0e"}}>Role *</label>
+            <label className="block mb-1" style={{fontSize:12,color:"var(--c-cream)"}}>Role *</label>
             <Input value={role} onChange={e=>setRole(e.target.value)} placeholder="e.g. Barista, Cashier, Supervisor" className="w-full"/>
-            {errors.role && <div style={{fontSize:11,color:"#E24B4A",marginTop:3}}>{errors.role}</div>}
+            {errors.role && <div style={{fontSize:11,color:"var(--c-red)",marginTop:3}}>{errors.role}</div>}
           </div>
           <div>
-            <label className="block mb-1" style={{fontSize:12,color:"#2c1a0e"}}>Shift</label>
+            <label className="block mb-1" style={{fontSize:12,color:"var(--c-cream)"}}>Shift</label>
             <div className="flex gap-2">
               {(["Shift A","Shift B"] as const).map(s => (
                 <button key={s} onClick={()=>setShift(s)} style={{
                   flex:1, padding:"8px 0", borderRadius:8, fontSize:13, fontWeight:600,
                   border: shift===s ? "1.5px solid #C8874A" : "1.5px solid #3a2510",
                   background: shift===s ? "rgba(200,135,74,0.15)" : "rgba(30,18,10,0.5)",
-                  color: shift===s ? "#C8761A" : "#4a3020", cursor:"pointer",
+                  color: shift===s ? "var(--c-c200)" : "var(--c-muted)", cursor:"pointer",
                 }}>{s}</button>
               ))}
             </div>
@@ -236,15 +236,15 @@ function DeleteConfirmModal({ name, onConfirm, onClose }: {
           <div className="modal-box__title">Remove Staff Member</div>
           <button className="modal-box__close" onClick={onClose}><i className="ti ti-x"/></button>
         </div>
-        <div style={{color:"#2c1a0e", fontSize:14, marginTop:8, lineHeight:1.6}}>
-          Are you sure you want to remove <strong style={{color:"#2c1a0e"}}>{name}</strong> from the team?
-          <div style={{fontSize:12, color:"#2c1a0e", marginTop:6}}>This will also remove their attendance records.</div>
+        <div style={{color:"var(--c-cream)", fontSize:14, marginTop:8, lineHeight:1.6}}>
+          Are you sure you want to remove <strong style={{color:"var(--c-cream)"}}>{name}</strong> from the team?
+          <div style={{fontSize:12, color:"var(--c-cream)", marginTop:6}}>This will also remove their attendance records.</div>
         </div>
         <div className="flex gap-2 mt-4">
           <Button variant="tab" className="flex-1 justify-center" onClick={onClose}>Cancel</Button>
           <button onClick={onConfirm} style={{
             flex:1, padding:"8px 0", borderRadius:8, fontSize:13, fontWeight:600,
-            background:"rgba(226,75,74,0.15)", color:"#E24B4A",
+            background:"rgba(226,75,74,0.15)", color:"var(--c-red)",
             border:"1.5px solid rgba(226,75,74,0.35)", cursor:"pointer",
           }}>
             <i className="ti ti-trash mr-1"/>Remove
@@ -267,15 +267,15 @@ function StaffEntryRow({ member, onCheckIn, onCheckOut, onEdit, onDelete }: {
     <div className="staff-row" style={{alignItems:"center", gap:10}}>
       <Avatar initials={member.initials} color={member.color} imageUrl={member.imageUrl}/>
       <div className="flex-1 min-w-0">
-        <div className="staff-row__name" style={{color:member.onDuty?"#2c1a0e":"#2c1a0e"}}>{member.name}</div>
+        <div className="staff-row__name" style={{color:member.onDuty?"var(--c-cream)":"var(--c-cream)"}}>{member.name}</div>
         <div className="staff-row__role">{member.role} · {member.shift}{member.phone ? ` · ${member.phone}` : ""}</div>
         {member.onDuty && member.checkInTime && (
-          <div style={{fontSize:11, color:"#4CAF50", marginTop:2}}>
+          <div style={{fontSize:11, color:"var(--c-green)", marginTop:2}}>
             <i className="ti ti-login mr-1" style={{fontSize:10}}/>Checked in {member.checkInTime}
           </div>
         )}
         {!member.onDuty && member.checkOutTime && (
-          <div style={{fontSize:11, color:"#2c1a0e", marginTop:2}}>
+          <div style={{fontSize:11, color:"var(--c-cream)", marginTop:2}}>
             <i className="ti ti-logout mr-1" style={{fontSize:10}}/>Left at {member.checkOutTime}
           </div>
         )}
@@ -286,7 +286,7 @@ function StaffEntryRow({ member, onCheckIn, onCheckOut, onEdit, onDelete }: {
           {!member.onDuty ? (
             <button onClick={onCheckIn} style={{
               fontSize:11, fontWeight:600, padding:"3px 10px", borderRadius:6,
-              background:"rgba(76,175,80,0.12)", color:"#4CAF50",
+              background:"rgba(76,175,80,0.12)", color:"var(--c-green)",
               border:"1px solid rgba(76,175,80,0.3)", cursor:"pointer",
             }}>
               <i className="ti ti-login mr-1" style={{fontSize:10}}/>Check In
@@ -294,7 +294,7 @@ function StaffEntryRow({ member, onCheckIn, onCheckOut, onEdit, onDelete }: {
           ) : (
             <button onClick={onCheckOut} style={{
               fontSize:11, fontWeight:600, padding:"3px 10px", borderRadius:6,
-              background:"rgba(226,75,74,0.12)", color:"#E24B4A",
+              background:"rgba(226,75,74,0.12)", color:"var(--c-red)",
               border:"1px solid rgba(226,75,74,0.3)", cursor:"pointer",
             }}>
               <i className="ti ti-logout mr-1" style={{fontSize:10}}/>Check Out
@@ -302,14 +302,14 @@ function StaffEntryRow({ member, onCheckIn, onCheckOut, onEdit, onDelete }: {
           )}
           <button onClick={onEdit} style={{
             fontSize:11, fontWeight:600, padding:"3px 8px", borderRadius:6,
-            background:"rgba(200,135,74,0.1)", color:"#C8761A",
+            background:"rgba(200,135,74,0.1)", color:"var(--c-c200)",
             border:"1px solid rgba(200,135,74,0.25)", cursor:"pointer",
           }}>
             <i className="ti ti-pencil" style={{fontSize:12}}/>
           </button>
           <button onClick={onDelete} style={{
             fontSize:11, fontWeight:600, padding:"3px 8px", borderRadius:6,
-            background:"rgba(226,75,74,0.08)", color:"#E24B4A",
+            background:"rgba(226,75,74,0.08)", color:"var(--c-red)",
             border:"1px solid rgba(226,75,74,0.2)", cursor:"pointer",
           }}>
             <i className="ti ti-trash" style={{fontSize:12}}/>
@@ -382,7 +382,7 @@ export function StaffPage({ staffList, onStaffChange }: StaffPageProps) {
         <div className="card">
           <div className="card__head">
             <div className="card__title">
-              Team <span style={{fontSize:12, color:"#2c1a0e", fontWeight:400}}>({onDutyCount} on duty)</span>
+              Team <span style={{fontSize:12, color:"var(--c-cream)", fontWeight:400}}>({onDutyCount} on duty)</span>
             </div>
             <Button variant="brew-sm" onClick={()=>setShowForm(true)}>
               <i className="ti ti-plus mr-1"/>Add
@@ -398,7 +398,7 @@ export function StaffPage({ staffList, onStaffChange }: StaffPageProps) {
             />
           ))}
           {staffList.length === 0 && (
-            <div style={{textAlign:"center", padding:"24px 0", color:"#2c1a0e", fontSize:13}}>
+            <div style={{textAlign:"center", padding:"24px 0", color:"var(--c-cream)", fontSize:13}}>
               <i className="ti ti-users" style={{fontSize:28, display:"block", marginBottom:8, opacity:0.4}}/>
               No staff members yet
             </div>
@@ -425,10 +425,10 @@ export function StaffPage({ staffList, onStaffChange }: StaffPageProps) {
             <table className="data-table">
               <thead>
                 <tr>
-                  <th style={{color:"#2c1a0e", fontWeight:600, fontSize:11, paddingBottom:6}}>Name</th>
-                  <th style={{color:"#2c1a0e", fontWeight:600, fontSize:11, paddingBottom:6, textAlign:"center"}}>Check In</th>
-                  <th style={{color:"#2c1a0e", fontWeight:600, fontSize:11, paddingBottom:6, textAlign:"center"}}>Check Out</th>
-                  <th style={{color:"#2c1a0e", fontWeight:600, fontSize:11, paddingBottom:6, textAlign:"right"}}>Status</th>
+                  <th style={{color:"var(--c-cream)", fontWeight:600, fontSize:11, paddingBottom:6}}>Name</th>
+                  <th style={{color:"var(--c-cream)", fontWeight:600, fontSize:11, paddingBottom:6, textAlign:"center"}}>Check In</th>
+                  <th style={{color:"var(--c-cream)", fontWeight:600, fontSize:11, paddingBottom:6, textAlign:"center"}}>Check Out</th>
+                  <th style={{color:"var(--c-cream)", fontWeight:600, fontSize:11, paddingBottom:6, textAlign:"right"}}>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -437,12 +437,12 @@ export function StaffPage({ staffList, onStaffChange }: StaffPageProps) {
                   const last = m.hoursLog.filter(e => e.date === todayStr).slice(-1)[0];
                   return (
                     <tr key={m.name}>
-                      <td style={{color:"#2c1a0e", paddingBottom:6}}>{m.name}</td>
-                      <td style={{textAlign:"center", color:"#4CAF50", fontWeight:600, fontSize:12}}>
-                        {last?.checkIn ?? <span style={{color:"#2c1a0e"}}>—</span>}
+                      <td style={{color:"var(--c-cream)", paddingBottom:6}}>{m.name}</td>
+                      <td style={{textAlign:"center", color:"var(--c-green)", fontWeight:600, fontSize:12}}>
+                        {last?.checkIn ?? <span style={{color:"var(--c-cream)"}}>—</span>}
                       </td>
-                      <td style={{textAlign:"center", color:"#E24B4A", fontWeight:600, fontSize:12}}>
-                        {last?.checkOut ?? <span style={{color:"#2c1a0e"}}>—</span>}
+                      <td style={{textAlign:"center", color:"var(--c-red)", fontWeight:600, fontSize:12}}>
+                        {last?.checkOut ?? <span style={{color:"var(--c-cream)"}}>—</span>}
                       </td>
                       <td style={{textAlign:"right"}}>
                         <Badge variant={m.onDuty ? "green" : last?.checkIn ? "gray" : "gray"}>
@@ -453,7 +453,7 @@ export function StaffPage({ staffList, onStaffChange }: StaffPageProps) {
                   );
                 })}
                 {staffList.length === 0 && (
-                  <tr><td colSpan={4} style={{textAlign:"center", color:"#2c1a0e", fontSize:12, padding:"12px 0"}}>No staff</td></tr>
+                  <tr><td colSpan={4} style={{textAlign:"center", color:"var(--c-cream)", fontSize:12, padding:"12px 0"}}>No staff</td></tr>
                 )}
               </tbody>
             </table>

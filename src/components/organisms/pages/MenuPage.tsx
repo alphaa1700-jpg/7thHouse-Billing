@@ -195,9 +195,9 @@ export function MenuPage({ menuItems, onMenuChange }: MenuPageProps) {
                   return (
                     <tr key={item.name + realIndex}>
                       <td style={{ fontSize: 22 }}>{item.emoji}</td>
-                      <td style={{ color: "#2c1a0e", fontWeight: 500 }}>{item.name}</td>
+                      <td style={{ color: "var(--c-cream)", fontWeight: 500 }}>{item.name}</td>
                       <td>{item.category}</td>
-                      <td style={{ color: "#C8761A", fontWeight: 600 }}>₹{item.price}</td>
+                      <td style={{ color: "var(--c-c200)", fontWeight: 600 }}>₹{item.price}</td>
                       <td><Badge variant={AV[item.availability]}>{item.availability}</Badge></td>
                       <td>
                         {item.trending
@@ -217,7 +217,7 @@ export function MenuPage({ menuItems, onMenuChange }: MenuPageProps) {
                           </Button>
                           <Button
                             variant="tab"
-                            style={{ fontSize: 11, padding: "4px 10px", color: "#E24B4A", borderColor: "#3a1818" }}
+                            style={{ fontSize: 11, padding: "4px 10px", color: "var(--c-red)", borderColor: "var(--c-red)" }}
                             onClick={() => handleDelete(realIndex)}
                           >
                             <i className="ti ti-trash" />

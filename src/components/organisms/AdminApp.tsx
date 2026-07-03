@@ -263,12 +263,12 @@ export function AdminApp() {
         background:"#1A0F07", gap:16,
       }}>
         <div style={{ fontSize:40 }}>☕</div>
-        <div style={{ color:"#C8761A", fontFamily:"DM Sans, sans-serif", fontSize:18, fontWeight:600 }}>
+        <div style={{ color:"var(--c-c200)", fontFamily:"DM Sans, sans-serif", fontSize:18, fontWeight:600 }}>
           7th House Coffee
         </div>
-        <div style={{ color:"#6b4a2a", fontSize:13 }}>Loading your café data…</div>
+        <div style={{ color:"var(--c-faint)", fontSize:13 }}>Loading your café data…</div>
         <div style={{ width:180, height:3, background:"#3a2510", borderRadius:4, overflow:"hidden", marginTop:8 }}>
-          <div style={{ height:"100%", background:"#C8761A", borderRadius:4, animation:"progress 1.4s ease-in-out infinite" }}/>
+          <div style={{ height:"100%", background:"var(--c-c200)", borderRadius:4, animation:"progress 1.4s ease-in-out infinite" }}/>
         </div>
         <style>{`@keyframes progress { 0%{width:0%} 60%{width:80%} 100%{width:100%} }`}</style>
       </div>

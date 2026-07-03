@@ -31,7 +31,7 @@ function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void 
       onClick={() => onChange(!on)}
       style={{
         width: 40, height: 22, borderRadius: 11, border: "none", cursor: "pointer",
-        background: on ? "#C8761A" : "#3a2510",
+        background: on ? "var(--c-c200)" : "#3a2510",
         position: "relative", transition: "background 0.2s", flexShrink: 0,
         boxShadow: on ? "0 0 8px rgba(200,135,74,0.4)" : "none",
       }}
@@ -39,7 +39,7 @@ function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void 
     >
       <span style={{
         display: "block", width: 16, height: 16, borderRadius: "50%",
-        background: on ? "#fff" : "#2c1a0e",
+        background: on ? "#fff" : "var(--c-cream)",
         position: "absolute", top: 3,
         left: on ? 21 : 3,
         transition: "left 0.2s, background 0.2s",
@@ -117,8 +117,8 @@ export function SettingsPage({ onSave }: SettingsPageProps) {
               {NOTIF_LABELS.map(({ key, label }) => (
                 <div key={key} className="flex justify-between items-center" style={{ fontSize:13, fontFamily:"DM Sans,sans-serif" }}>
                   <div>
-                    <span style={{ color:"#4a3020" }}>{label}</span>
-                    <div style={{ fontSize:11, color: notifs[key] ? "#4CAF50" : "#2c1a0e", marginTop:1 }}>
+                    <span style={{ color:"var(--c-muted)" }}>{label}</span>
+                    <div style={{ fontSize:11, color: notifs[key] ? "var(--c-green)" : "var(--c-cream)", marginTop:1 }}>
                       {notifs[key] ? "Enabled" : "Disabled"}
                     </div>
                   </div>

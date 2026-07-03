@@ -120,10 +120,10 @@ export function OrdersPage({ orders, completedOrders, onOrdersChange, onDeleteOr
         <SectionTitle>Order Management</SectionTitle>
         <div className="orders-stat-row">
           {[
-            { label:"All Orders", val:counts.all,   color:"#C8761A", key:"All Orders" },
-            { label:"In Prep",    val:counts.prep,  color:"#EF9F27", key:"In Prep"    },
-            { label:"Ready",      val:counts.ready, color:"#4CAF50", key:"Ready"      },
-            { label:"Completed",  val:counts.done,  color:"#60A0E8", key:"Completed"  },
+            { label:"All Orders", val:counts.all,   color:"var(--c-c200)", key:"All Orders" },
+            { label:"In Prep",    val:counts.prep,  color:"var(--c-amber)", key:"In Prep"    },
+            { label:"Ready",      val:counts.ready, color:"var(--c-green)", key:"Ready"      },
+            { label:"Completed",  val:counts.done,  color:"var(--c-blue)", key:"Completed"  },
           ].map(s => (
             <div
               key={s.label}
@@ -142,9 +142,9 @@ export function OrdersPage({ orders, completedOrders, onOrdersChange, onDeleteOr
             background:"rgba(96,160,232,0.08)", border:"1px solid rgba(96,160,232,0.2)",
             borderRadius:10, marginBottom:16,
           }}>
-            <i className="ti ti-checks" style={{fontSize:18, color:"#60A0E8"}}/>
+            <i className="ti ti-checks" style={{fontSize:18, color:"var(--c-blue)"}}/>
             <div>
-              <div style={{fontWeight:600, color:"#60A0E8", fontSize:14}}>Completed Orders — Today</div>
+              <div style={{fontWeight:600, color:"var(--c-blue)", fontSize:14}}>Completed Orders — Today</div>
               <div style={{fontSize:12, color:"var(--c-faint)"}}>
                 {counts.done === 0
                   ? "No orders completed yet today"
@@ -213,7 +213,7 @@ export function OrdersPage({ orders, completedOrders, onOrdersChange, onDeleteOr
                         <div className="orders-customer-av">{o.customer.charAt(0)}</div>
                         <div>
                           <div>{o.customer}</div>
-                          {o.phone && <div style={{fontSize:11,color:"#2c1a0e"}}>{o.phone}</div>}
+                          {o.phone && <div style={{fontSize:11,color:"var(--c-cream)"}}>{o.phone}</div>}
                         </div>
                       </div>
                     </td>
@@ -232,7 +232,7 @@ export function OrdersPage({ orders, completedOrders, onOrdersChange, onDeleteOr
                           <i className="ti ti-armchair mr-1" style={{fontSize:11}}/>T{o.tableNumber}
                         </div>
                       ) : (
-                        <span style={{color:"#2c1a0e",fontSize:12}}>Takeaway</span>
+                        <span style={{color:"var(--c-cream)",fontSize:12}}>Takeaway</span>
                       )}
                     </td>
                     <td className="orders-td">

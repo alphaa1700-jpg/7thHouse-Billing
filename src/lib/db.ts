@@ -1,6 +1,6 @@
 import { MENU_ITEMS, STOCK_ITEMS, INITIAL_TABLES } from "@/lib/data";
 import type { Order, MenuItem, StockItem, CafeTable, Customer } from "@/types";
-import { createSign } from "crypto";
+import { createPrivateKey, createSign } from "crypto";
 export interface StaffEntry {
   initials: string; name: string; role: string;
   shift: "Shift A" | "Shift B"; onDuty: boolean; color: string; hours?: string;
@@ -42,29 +42,58 @@ function hasSheetConfig(): boolean {
   return Boolean(process.env.GOOGLE_SERVICE_ACCOUNT && process.env.GOOGLE_SHEET_ID);
 }
 
+function parseServiceAccount() {
+  const raw = process.env.GOOGLE_SERVICE_ACCOUNT;
+  if (!raw) throw new Error("GOOGLE_SERVICE_ACCOUNT env var is missing");
+
+  const normalizeJson = (value: string) => value.replace(/\r\n/g, "\n").replace(/\n/g, "\\n");
+
+  try {
+    return JSON.parse(raw) as {
+      client_email: string;
+      private_key: string;
+    };
+  } catch (firstError) {
+    try {
+      return JSON.parse(normalizeJson(raw)) as {
+        client_email: string;
+        private_key: string;
+      };
+    } catch (secondError) {
+      throw new Error(
+        `GOOGLE_SERVICE_ACCOUNT is not valid JSON: ${secondError instanceof Error ? secondError.message : String(secondError)}`
+      );
+    }
+  }
+}
+
 async function getAccessToken(): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
   if (_accessToken && now < _tokenExpiry - 60) return _accessToken;
 
-  const raw = process.env.GOOGLE_SERVICE_ACCOUNT;
-  if (!raw) throw new Error("GOOGLE_SERVICE_ACCOUNT env var is missing");
-  const sa = JSON.parse(raw) as {
-    client_email: string;
-    private_key: string;
-  };
+  const sa = parseServiceAccount();
+  const iat = Math.max(now - 30, 0);
+  const exp = iat + 3300;
+
   const header  = Buffer.from(JSON.stringify({ alg: "RS256", typ: "JWT" })).toString("base64url");
   const payload = Buffer.from(JSON.stringify({
     iss:   sa.client_email,
     scope: "https://www.googleapis.com/auth/spreadsheets",
     aud:   "https://oauth2.googleapis.com/token",
-    iat:   now,
-    exp:   now + 3600,
+    iat,
+    exp,
   })).toString("base64url");
   const signingInput = `${header}.${payload}`;
+
+  const privateKey = createPrivateKey({
+    key: sa.private_key,
+    format: "pem",
+  });
   const sign = createSign("RSA-SHA256");
   sign.update(signingInput);
-  const signature = sign.sign(sa.private_key, "base64url");
+  const signature = sign.sign(privateKey, "base64url");
   const jwt = `${signingInput}.${signature}`;
+
   const res = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -274,8 +303,8 @@ export async function readDB(): Promise<DB> {
       lastUpdated: new Date().toISOString(),
     };
   } catch (error) {
-    console.warn("[db] Falling back to local defaults:", error);
-    return DEFAULTS;
+    console.error("[db] Failed to load data from Google Sheets:", error);
+    throw error;
   }
 }
 export async function writeDB(data: DB): Promise<DB> {

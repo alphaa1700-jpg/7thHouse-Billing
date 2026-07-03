@@ -66,7 +66,7 @@ function OrderModal({ cart, total, tables, onConfirm, onClose, preselectedTableI
           {isTableLocked ? (
             selectedTable && (
               <div className="pos-table-selected-info">
-                <i className="ti ti-circle-check" style={{ color: "#4CAF50", marginRight: 6 }}/>
+                <i className="ti ti-circle-check" style={{ color: "var(--c-green)", marginRight: 6 }}/>
                 Table {selectedTable.number} — seats {selectedTable.capacity} guests
               </div>
             )
@@ -98,7 +98,7 @@ function OrderModal({ cart, total, tables, onConfirm, onClose, preselectedTableI
               )}
               {selectedTable && (
                 <div className="pos-table-selected-info">
-                  <i className="ti ti-circle-check" style={{ color: "#4CAF50", marginRight: 6 }}/>
+                  <i className="ti ti-circle-check" style={{ color: "var(--c-green)", marginRight: 6 }}/>
                   Table {selectedTable.number} — seats {selectedTable.capacity} guests
                 </div>
               )}
@@ -150,12 +150,12 @@ function AddItemsModal({ cart, extra, table, onConfirm, onClose }: AddItemsModal
           <button className="modal-box__close" onClick={onClose}><i className="ti ti-x"/></button>
         </div>
         <div style={{display: "flex", alignItems: "center", gap: 10, padding: "10px 14px",background: "rgba(200,135,74,0.08)", borderRadius: 8, marginBottom: 16,border: "1px solid rgba(200,135,74,0.2)",}}>
-          <div style={{width: 34, height: 34, borderRadius: "50%", background: "#C8761A",display: "flex", alignItems: "center", justifyContent: "center",fontWeight: 700, color: "#1A0F07", fontSize: 15, flexShrink: 0,}}>
+          <div style={{width: 34, height: 34, borderRadius: "50%", background: "var(--c-c200)",display: "flex", alignItems: "center", justifyContent: "center",fontWeight: 700, color: "#1A0F07", fontSize: 15, flexShrink: 0,}}>
             {session.customerName.charAt(0).toUpperCase()}
           </div>
           <div>
             <div style={{ fontWeight: 600, color: "#E8C49A", fontSize: 14 }}>{session.customerName}</div>
-            <div style={{ fontSize: 12, color: "#6b4a2a" }}>
+            <div style={{ fontSize: 12, color: "var(--c-faint)" }}>
               <i className="ti ti-armchair" style={{ marginRight: 4 }}/>Table {table.number}
               &nbsp;·&nbsp;
               <i className="ti ti-receipt" style={{ marginRight: 4 }}/>Order {session.orderId}
@@ -171,10 +171,10 @@ function AddItemsModal({ cart, extra, table, onConfirm, onClose }: AddItemsModal
             </div>
           ))}
           <div className="pos-order-summary__divider"/>
-          <div className="pos-order-summary__row" style={{ color: "#6b4a2a", fontSize: 12 }}>
+          <div className="pos-order-summary__row" style={{ color: "var(--c-faint)", fontSize: 12 }}>
             <span>Previous total</span><span>₹{session.total}</span>
           </div>
-          <div className="pos-order-summary__row" style={{ color: "#6b4a2a", fontSize: 12 }}>
+          <div className="pos-order-summary__row" style={{ color: "var(--c-faint)", fontSize: 12 }}>
             <span>Adding now (incl. 5% tax)</span><span>+ ₹{extra}</span>
           </div>
           <div className="pos-order-summary__total" style={{ marginTop: 6 }}>
@@ -208,7 +208,7 @@ function OrderConfirmationModal({ orderId, tableNumber, items, total, onClose }:
           <button className="modal-box__close" onClick={onClose}><i className="ti ti-x"/></button>
         </div>
         <div style={{ textAlign: "center", marginBottom: 16 }}>
-          <i className="ti ti-circle-check" style={{ fontSize: 42, color: "#4CAF50" }}/>
+          <i className="ti ti-circle-check" style={{ fontSize: 42, color: "var(--c-green)" }}/>
           <div style={{ fontWeight: 700, fontSize: 15, color: "#E8C49A", marginTop: 8 }}>
             Order {orderId} placed for Table {tableNumber}
           </div>
@@ -309,20 +309,20 @@ export function POSPage({
       background: "rgba(239,159,39,0.12)", border: "1px solid rgba(239,159,39,0.35)",
       borderRadius: 10, marginBottom: 16,
     }}>
-      <i className="ti ti-plus-equal" style={{ fontSize: 20, color: "#EF9F27" }}/>
+      <i className="ti ti-plus-equal" style={{ fontSize: 20, color: "var(--c-amber)" }}/>
       <div style={{ flex: 1 }}>
-        <div style={{ fontWeight: 700, color: "#EF9F27", fontSize: 14 }}>
+        <div style={{ fontWeight: 700, color: "var(--c-amber)", fontSize: 14 }}>
           Adding items to Table {addToTable.number}
         </div>
-        <div style={{ fontSize: 12, color: "#6b4a2a" }}>
-          Customer: <strong style={{ color: "#C8761A" }}>{addToTable.session?.customerName}</strong>
+        <div style={{ fontSize: 12, color: "var(--c-faint)" }}>
+          Customer: <strong style={{ color: "var(--c-c200)" }}>{addToTable.session?.customerName}</strong>
           &nbsp;·&nbsp;Order: {addToTable.session?.orderId}
           &nbsp;·&nbsp;Current total: ₹{addToTable.session?.total}
         </div>
       </div>
       <button
         onClick={onClearAddMode}
-        style={{ background: "none", border: "none", color: "#6b4a2a", cursor: "pointer", fontSize: 18, padding: 4 }}
+        style={{ background: "none", border: "none", color: "var(--c-faint)", cursor: "pointer", fontSize: 18, padding: 4 }}
         title="Cancel — go back to new order mode"
       >
         <i className="ti ti-x"/>

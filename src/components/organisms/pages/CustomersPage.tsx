@@ -40,7 +40,7 @@ export function CustomersPage({ customers }: CustomersPageProps) {
           <div className="card__title">Customers</div>
         </div>
         {customers.length === 0 ? (
-          <div style={{ padding: "2rem", textAlign: "center", color: "#2c1a0e", fontSize: 13 }}>
+          <div style={{ padding: "2rem", textAlign: "center", color: "var(--c-cream)", fontSize: 13 }}>
             <i className="ti ti-users" style={{ fontSize: 28, display: "block", marginBottom: 6 }}/>
             No customers yet — they appear here after bills are paid
           </div>
@@ -61,9 +61,9 @@ export function CustomersPage({ customers }: CustomersPageProps) {
                 <tbody>
                   {paginated.map(c => (
                     <tr key={c.name}>
-                      <td style={{ color: "#2c1a0e", fontWeight: 500 }}>{c.name}</td>
+                      <td style={{ color: "var(--c-cream)", fontWeight: 500 }}>{c.name}</td>
                       <td>{c.visits}</td>
-                      <td style={{ color: "#C8761A", fontWeight: 700 }}>{c.spent}</td>
+                      <td style={{ color: "var(--c-c200)", fontWeight: 700 }}>{c.spent}</td>
                       <td>{c.favItem}</td>
                       <td>{c.lastVisit}</td>
                       <td>

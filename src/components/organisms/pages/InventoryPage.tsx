@@ -65,7 +65,7 @@ function EditModal({ item, onSave, onClose }: EditModalProps) {
     err?: string; placeholder?: string; type?: string;
   }) => (
     <div>
-      <label className="block mb-1" style={{fontSize:12,color:"#4a3020"}}>{label}</label>
+      <label className="block mb-1" style={{fontSize:12,color:"var(--c-muted)"}}>{label}</label>
       <Input
         value={value}
         type={type}
@@ -73,7 +73,7 @@ function EditModal({ item, onSave, onClose }: EditModalProps) {
         placeholder={placeholder}
         className="w-full"
       />
-      {err && <div style={{fontSize:11,color:"#E24B4A",marginTop:2}}>{err}</div>}
+      {err && <div style={{fontSize:11,color:"var(--c-red)",marginTop:2}}>{err}</div>}
     </div>
   );
   return (
@@ -93,8 +93,8 @@ function EditModal({ item, onSave, onClose }: EditModalProps) {
             <Field label="Unit *"       value={unit}     onChange={setUnit}     err={errors.unit}  placeholder="e.g. kg, pcs, L"/>
           </div>
           <Field label="Reorder At"     value={reorderAt} onChange={setReorderAt} placeholder="e.g. 2 kg"/>
-          <div style={{padding:"10px 12px",borderRadius:8,background:"rgba(200,135,74,0.08)",border:"1px solid rgba(200,135,74,0.15)",fontSize:12,color:"#4a3020"}}>
-            <i className="ti ti-info-circle mr-1" style={{color:"#C8761A"}}/>
+          <div style={{padding:"10px 12px",borderRadius:8,background:"rgba(200,135,74,0.08)",border:"1px solid rgba(200,135,74,0.15)",fontSize:12,color:"var(--c-muted)"}}>
+            <i className="ti ti-info-circle mr-1" style={{color:"var(--c-c200)"}}/>
             Status will be auto-calculated from stock vs reorder level
           </div>
           <div className="flex gap-2 mt-1">
@@ -120,13 +120,13 @@ function DeleteConfirm({ item, onConfirm, onClose }: { item: StockItem; onConfir
           <div className="modal-box__title">Delete Item</div>
           <button className="modal-box__close" onClick={onClose}><i className="ti ti-x"/></button>
         </div>
-        <div style={{color:"#4a3020",fontSize:14,marginBottom:20}}>
-          Are you sure you want to remove <strong style={{color:"#2c1a0e"}}>{item.name}</strong> from inventory? This cannot be undone.
+        <div style={{color:"var(--c-muted)",fontSize:14,marginBottom:20}}>
+          Are you sure you want to remove <strong style={{color:"var(--c-cream)"}}>{item.name}</strong> from inventory? This cannot be undone.
         </div>
         <div className="flex gap-2">
           <Button variant="tab" className="flex-1 justify-center" onClick={onClose}>Cancel</Button>
           <Button variant="brew" className="flex-1 justify-center" onClick={onConfirm}
-            style={{background:"rgba(226,75,74,0.2)",borderColor:"rgba(226,75,74,0.4)",color:"#E24B4A"}}>
+            style={{background:"rgba(226,75,74,0.2)",borderColor:"rgba(226,75,74,0.4)",color:"var(--c-red)"}}>
             <i className="ti ti-trash mr-1"/>Delete
           </Button>
         </div>
@@ -178,16 +178,16 @@ export function InventoryPage({ stockItems, onStockChange }: InventoryPageProps)
             </thead>
             <tbody>
               {stockItems.length === 0 && (
-                <tr><td colSpan={7} style={{textAlign:"center",padding:"32px 0",color:"#2c1a0e"}}>
+                <tr><td colSpan={7} style={{textAlign:"center",padding:"32px 0",color:"var(--c-cream)"}}>
                   <i className="ti ti-box-off" style={{fontSize:28,display:"block",marginBottom:6}}/>
                   No items in inventory
                 </td></tr>
               )}
               {stockItems.map(s => (
                 <tr key={s.name}>
-                  <td style={{color:"#2c1a0e",fontWeight:500}}>{s.name}</td>
+                  <td style={{color:"var(--c-cream)",fontWeight:500}}>{s.name}</td>
                   <td>{s.category}</td>
-                  <td style={{color: s.status === "Critical" ? "#E24B4A" : s.status === "Low" ? "#EF9F27" : "#4CAF50", fontWeight:600}}>
+                  <td style={{color: s.status === "Critical" ? "var(--c-red)" : s.status === "Low" ? "var(--c-amber)" : "var(--c-green)", fontWeight:600}}>
                     {s.stock}
                   </td>
                   <td>{s.unit}</td>
@@ -198,13 +198,13 @@ export function InventoryPage({ stockItems, onStockChange }: InventoryPageProps)
                       <button
                         onClick={() => setEditItem(s)}
                         title="Edit item"
-                        style={{padding:"5px 10px", borderRadius:6, fontSize:12, cursor:"pointer", background:"rgba(200,135,74,0.12)", color:"#C8761A", border:"1px solid rgba(200,135,74,0.25)", display:"flex", alignItems:"center", gap:4,}}>
+                        style={{padding:"5px 10px", borderRadius:6, fontSize:12, cursor:"pointer", background:"rgba(200,135,74,0.12)", color:"var(--c-c200)", border:"1px solid rgba(200,135,74,0.25)", display:"flex", alignItems:"center", gap:4,}}>
                         <i className="ti ti-pencil" style={{fontSize:13}}/>Edit
                       </button>
                       <button
                         onClick={() => setDeleteItem(s)}
                         title="Delete item"
-                        style={{padding:"5px 10px", borderRadius:6, fontSize:12, cursor:"pointer", background:"rgba(226,75,74,0.10)", color:"#E24B4A",border:"1px solid rgba(226,75,74,0.25)", display:"flex", alignItems:"center", gap:4,}}>
+                        style={{padding:"5px 10px", borderRadius:6, fontSize:12, cursor:"pointer", background:"rgba(226,75,74,0.10)", color:"var(--c-red)",border:"1px solid rgba(226,75,74,0.25)", display:"flex", alignItems:"center", gap:4,}}>
                         <i className="ti ti-trash" style={{fontSize:13}}/>Delete
                       </button>
                     </div>

@@ -100,6 +100,13 @@ export function AnalyticsPage({ allOrders }: AnalyticsPageProps) {
   const hC = useRef<Chart|null>(null);
   const a = useMemo(() => computeAnalytics(allOrders), [allOrders]);
   useEffect(() => {
+    // Resolve CSS vars at runtime so charts respond to theme changes
+    const style = getComputedStyle(document.documentElement);
+    const accent  = style.getPropertyValue("--c-c200").trim() || "#C8761A";
+    const textClr = style.getPropertyValue("--c-cream").trim() || "#2c1a0e";
+    const gridClr = style.getPropertyValue("--c-bg-500").trim() || "#c8ad88";
+    const accentFade = `${accent}44`;
+
     if (revRef.current) {
       rC.current?.destroy();
       rC.current = new Chart(revRef.current, {
@@ -110,7 +117,7 @@ export function AnalyticsPage({ allOrders }: AnalyticsPageProps) {
             label: "Revenue",
             data: a.last7.map(d => d.value),
             backgroundColor: a.last7.map((_, i) =>
-              i === a.last7.length - 1 ? "#C8761A" : "rgba(200,135,74,0.25)"
+              i === a.last7.length - 1 ? accent : accentFade
             ),
             borderRadius: 6,
           }],
@@ -120,10 +127,10 @@ export function AnalyticsPage({ allOrders }: AnalyticsPageProps) {
           plugins: { legend: { display: false } },
           scales: {
             y: {
-              ticks: { callback: v => `₹${Math.round(Number(v)/1000)}k`, color: "#2c1a0e" },
-              grid: { color: "rgba(58,32,16,0.5)" }, border: { color: "#3a2010" },
+              ticks: { callback: v => `₹${Math.round(Number(v)/1000)}k`, color: textClr },
+              grid: { color: `${gridClr}80` }, border: { color: gridClr },
             },
-            x: { ticks: { color: "#2c1a0e", font: { size: 10 } }, grid: { display: false }, border: { color: "#3a2010" } },
+            x: { ticks: { color: textClr, font: { size: 10 } }, grid: { display: false }, border: { color: gridClr } },
           },
         },
       });
@@ -137,7 +144,7 @@ export function AnalyticsPage({ allOrders }: AnalyticsPageProps) {
           datasets: [{
             label: "Orders",
             data: a.hourlyValues,
-            backgroundColor: "#C8761A",
+            backgroundColor: accent,
             borderRadius: 4,
           }],
         },
@@ -146,10 +153,10 @@ export function AnalyticsPage({ allOrders }: AnalyticsPageProps) {
           plugins: { legend: { display: false } },
           scales: {
             y: {
-              ticks: { color: "#2c1a0e", stepSize: 1 },
-              grid: { color: "rgba(58,32,16,0.5)" }, border: { color: "#3a2010" },
+              ticks: { color: textClr, stepSize: 1 },
+              grid: { color: `${gridClr}80` }, border: { color: gridClr },
             },
-            x: { ticks: { color: "#2c1a0e", font: { size: 10 } }, grid: { display: false }, border: { color: "#3a2010" } },
+            x: { ticks: { color: textClr, font: { size: 10 } }, grid: { display: false }, border: { color: gridClr } },
           },
         },
       });
@@ -158,6 +165,29 @@ export function AnalyticsPage({ allOrders }: AnalyticsPageProps) {
       rC.current?.destroy(); rC.current = null;
       hC.current?.destroy(); hC.current = null;
     };
+  }, [a]);
+
+  // Rebuild charts when theme changes (data-theme attribute on <html>)
+  useEffect(() => {
+    const obs = new MutationObserver(() => {
+      rC.current?.destroy(); rC.current = null;
+      hC.current?.destroy(); hC.current = null;
+      // Re-trigger chart build by dispatching a harmless state update
+      // We do this by re-running the chart build inline
+      const style = getComputedStyle(document.documentElement);
+      const accent  = style.getPropertyValue("--c-c200").trim() || "#C8761A";
+      const textClr = style.getPropertyValue("--c-cream").trim() || "#2c1a0e";
+      const gridClr = style.getPropertyValue("--c-bg-500").trim() || "#c8ad88";
+      const accentFade = `${accent}44`;
+      if (revRef.current) {
+        rC.current = new (window as any).Chart(revRef.current, { type:"bar", data:{ labels:a.last7.map((d:any)=>d.label), datasets:[{ label:"Revenue", data:a.last7.map((d:any)=>d.value), backgroundColor:a.last7.map((_:any,i:number)=>i===a.last7.length-1?accent:accentFade), borderRadius:6 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{ticks:{callback:(v:any)=>`₹${Math.round(Number(v)/1000)}k`,color:textClr},grid:{color:`${gridClr}80`},border:{color:gridClr}}, x:{ticks:{color:textClr,font:{size:10}},grid:{display:false},border:{color:gridClr}} } } });
+      }
+      if (hourRef.current) {
+        hC.current = new (window as any).Chart(hourRef.current, { type:"bar", data:{ labels:a.hourlyLabels, datasets:[{ label:"Orders", data:a.hourlyValues, backgroundColor:accent, borderRadius:4 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{ticks:{color:textClr,stepSize:1},grid:{color:`${gridClr}80`},border:{color:gridClr}}, x:{ticks:{color:textClr,font:{size:10}},grid:{display:false},border:{color:gridClr}} } } });
+      }
+    });
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => obs.disconnect();
   }, [a]);
 
   return (
@@ -173,7 +203,7 @@ export function AnalyticsPage({ allOrders }: AnalyticsPageProps) {
       <div className="card mb-4">
         <div className="card__head">
           <div className="card__title">Revenue — Last 7 Days</div>
-          <span style={{ fontSize: 11, color: "#6b4a2a", fontFamily: "DM Sans,sans-serif" }}>
+          <span style={{ fontSize: 11, color: "var(--c-faint)", fontFamily: "DM Sans,sans-serif" }}>
             {fmtINR(a.weekTotal)} this week
           </span>
         </div>
@@ -185,16 +215,16 @@ export function AnalyticsPage({ allOrders }: AnalyticsPageProps) {
         <div className="card">
           <div className="card__head"><div className="card__title">Top Sellers</div></div>
           {a.topSellers.length === 0 ? (
-            <div style={{ color: "#2c1a0e", padding: "1rem", textAlign: "center" }}>No orders yet</div>
+            <div style={{ color: "var(--c-cream)", padding: "1rem", textAlign: "center" }}>No orders yet</div>
           ) : (
             <table className="data-table">
               <thead><tr><th>Item</th><th>Qty</th><th>Revenue</th></tr></thead>
               <tbody>
                 {a.topSellers.map(({ name, qty, revenue }) => (
                   <tr key={name}>
-                    <td style={{ color: "#2c1a0e" }}>{name}</td>
+                    <td style={{ color: "var(--c-cream)" }}>{name}</td>
                     <td>{qty}</td>
-                    <td style={{ color: "#C8761A", fontWeight: 700 }}>{fmtINR(revenue)}</td>
+                    <td style={{ color: "var(--c-c200)", fontWeight: 700 }}>{fmtINR(revenue)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -204,7 +234,7 @@ export function AnalyticsPage({ allOrders }: AnalyticsPageProps) {
         <div className="card">
           <div className="card__head">
             <div className="card__title">Orders by Hour</div>
-            <span style={{ fontSize: 11, color: "#6b4a2a", fontFamily: "DM Sans,sans-serif" }}>Today</span>
+            <span style={{ fontSize: 11, color: "var(--c-faint)", fontFamily: "DM Sans,sans-serif" }}>Today</span>
           </div>
           <div style={{ position: "relative", width: "100%", height: 160 }}>
             <canvas ref={hourRef} aria-label="Hourly chart"/>
