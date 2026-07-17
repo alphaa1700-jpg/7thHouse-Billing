@@ -43,14 +43,27 @@ function hasSheetConfig(): boolean {
 }
 
 function parseServiceAccount() {
-  let raw = process.env.GOOGLE_SERVICE_ACCOUNT;
-  if (!raw) throw new Error("GOOGLE_SERVICE_ACCOUNT env var is missing");
+  const raw = process.env.GOOGLE_SERVICE_ACCOUNT;
+  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
 
-  raw = raw.trim();
+  // Prefer direct client email and private key variables if present
+  if (clientEmail && privateKey) {
+    return {
+      client_email: clientEmail.trim(),
+      private_key: privateKey.replace(/\\n/g, "\n").trim(),
+    };
+  }
+
+  if (!raw) {
+    throw new Error("Credentials missing: Provide GOOGLE_CLIENT_EMAIL & GOOGLE_PRIVATE_KEY, or GOOGLE_SERVICE_ACCOUNT");
+  }
+
+  let jsonStr = raw.trim();
   // Check if base64 encoded (does not start with '{')
-  if (!raw.startsWith("{")) {
+  if (!jsonStr.startsWith("{")) {
     try {
-      raw = Buffer.from(raw, "base64").toString("utf8").trim();
+      jsonStr = Buffer.from(jsonStr, "base64").toString("utf8").trim();
     } catch (e) {
       throw new Error(`Failed to base64-decode GOOGLE_SERVICE_ACCOUNT: ${e instanceof Error ? e.message : String(e)}`);
     }
@@ -59,13 +72,13 @@ function parseServiceAccount() {
   const normalizeJson = (value: string) => value.replace(/\r\n/g, "\n").replace(/\n/g, "\\n");
 
   try {
-    return JSON.parse(raw) as {
+    return JSON.parse(jsonStr) as {
       client_email: string;
       private_key: string;
     };
   } catch (firstError) {
     try {
-      return JSON.parse(normalizeJson(raw)) as {
+      return JSON.parse(normalizeJson(jsonStr)) as {
         client_email: string;
         private_key: string;
       };
