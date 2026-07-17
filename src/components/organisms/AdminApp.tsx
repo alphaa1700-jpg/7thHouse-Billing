@@ -275,7 +275,7 @@ export function AdminApp() {
     );
   }
   return (
-    <div className="flex min-h-screen bg-coffee-800 overflow-hidden">
+    <div className="flex min-h-screen bg-[var(--c-bg-800)] overflow-hidden">
       <Sidebar
         activePage={page} onNavigate={navigate}
         mobileOpen={mobileOpen} onOverlayClick={() => setMobileOpen(false)}

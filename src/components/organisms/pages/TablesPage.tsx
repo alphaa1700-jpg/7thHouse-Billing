@@ -163,13 +163,13 @@ function SessionDrawer({ table, onClose, onClear, onReady, onAddItems }: {
               </Button>
             )}
             {sending === "sent" && (
-              <div style={{padding:"10px 14px", borderRadius:8, fontSize:13, fontWeight:600,background:"#d4edda", color:"var(--c-green)",border:"1px solid rgba(76,175,80,0.3)", display:"flex", alignItems:"center", gap:8,}}>
+              <div style={{padding:"10px 14px", borderRadius:8, fontSize:13, fontWeight:600,background:"rgba(46,125,50,0.12)", color:"var(--c-green)",border:"1px solid rgba(76,175,80,0.25)", display:"flex", alignItems:"center", gap:8,}}>
                 <i className="ti ti-brand-whatsapp" style={{fontSize:18}}/>
                 Bill sent to {session.phone} ✓ — clearing table…
               </div>
             )}
             {sending === "failed" && (
-              <div style={{padding:"10px 14px", borderRadius:8, fontSize:12,background:"#fde8e8", color:"var(--c-red)", border:"1px solid rgba(226,75,74,0.25)", display:"flex", alignItems:"center", gap:8,}}>
+              <div style={{padding:"10px 14px", borderRadius:8, fontSize:12,background:"rgba(226,75,74,0.12)", color:"var(--c-red)", border:"1px solid rgba(226,75,74,0.25)", display:"flex", alignItems:"center", gap:8,}}>
                 <i className="ti ti-alert-triangle" style={{fontSize:16}}/>
                 WhatsApp failed — check Twilio config. Table still cleared.
               </div>

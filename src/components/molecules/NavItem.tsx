@@ -8,6 +8,7 @@ export function NavItem({ item, active, onNavigate }: P) {
     <button
       className={clsx("sidebar__nav-item", active && "sidebar__nav-item--active")}
       onClick={() => onNavigate(item.page)}
+      title={item.label}
     >
       <Icon name={item.icon} />
       <span>{item.label}</span>
