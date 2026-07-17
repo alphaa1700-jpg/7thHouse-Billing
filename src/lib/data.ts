@@ -1,15 +1,15 @@
 import type { MenuItem, StockItem, NavItemDef, CafeTable } from "@/types";
 
 export const MENU_ITEMS: MenuItem[] = [
-  { emoji:"☕", name:"Cappuccino",  category:"Espresso",  price:150, availability:"Available",   ordersToday:38, trending:true },
-  { emoji:"🥛", name:"Latte",       category:"Espresso",  price:160, availability:"Available",   ordersToday:29 },
-  { emoji:"🧊", name:"Cold Brew",   category:"Cold",      price:180, availability:"Available",   ordersToday:24, trending:true },
-  { emoji:"🍵", name:"Matcha Latte",category:"Specialty", price:190, availability:"Low Stock",   ordersToday:18, hot:true },
-  { emoji:"⚡", name:"Espresso",    category:"Espresso",  price:100, availability:"Available",   ordersToday:12 },
-  { emoji:"🖤", name:"Americano",   category:"Espresso",  price:120, availability:"Available",   ordersToday:16 },
-  { emoji:"🥐", name:"Croissant",   category:"Food",      price:100, availability:"Unavailable", ordersToday:0  },
-  { emoji:"🧁", name:"Muffin",      category:"Food",      price:80,  availability:"Available",   ordersToday:8  },
-  { emoji:"🥪", name:"Sandwich",    category:"Food",      price:140, availability:"Available",   ordersToday:6  },
+  { emoji:"/images/cappuccino.jpg", name:"Cappuccino",  category:"Espresso",  price:150, availability:"Available",   ordersToday:38, trending:true },
+  { emoji:"/images/latte.jpg",       name:"Latte",       category:"Espresso",  price:160, availability:"Available",   ordersToday:29 },
+  { emoji:"/images/cold_brew.jpg",   name:"Cold Brew",   category:"Cold",      price:180, availability:"Available",   ordersToday:24, trending:true },
+  { emoji:"/images/matcha_latte.jpg",name:"Matcha Latte",category:"Specialty", price:190, availability:"Low Stock",   ordersToday:18, hot:true },
+  { emoji:"/images/espresso.jpg",    name:"Espresso",    category:"Espresso",  price:100, availability:"Available",   ordersToday:12 },
+  { emoji:"/images/americano.jpg",   name:"Americano",   category:"Espresso",  price:120, availability:"Available",   ordersToday:16 },
+  { emoji:"/images/croissant.jpg",   name:"Croissant",   category:"Food",      price:100, availability:"Unavailable", ordersToday:0  },
+  { emoji:"/images/muffin.jpg",      name:"Muffin",      category:"Food",      price:80,  availability:"Available",   ordersToday:8  },
+  { emoji:"/images/sandwich.jpg",    name:"Sandwich",    category:"Food",      price:140, availability:"Available",   ordersToday:6  },
 ];
 
 export const STOCK_ITEMS: StockItem[] = [

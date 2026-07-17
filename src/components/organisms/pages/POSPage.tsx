@@ -350,7 +350,17 @@ export function POSPage({
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 {filtered.map(item => (
                   <button key={item.name} className="menu-btn" onClick={() => addItem(item.name, item.price)}>
-                    <span className="menu-btn__emoji">{item.emoji}</span>
+                    <span className="menu-btn__emoji" style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "32px" }}>
+                      {item.emoji.startsWith("/") || item.emoji.startsWith("http") ? (
+                        <img 
+                          src={item.emoji} 
+                          alt={item.name} 
+                          style={{ width: "32px", height: "32px", objectFit: "cover", borderRadius: "8px" }} 
+                        />
+                      ) : (
+                        item.emoji
+                      )}
+                    </span>
                     <div className="menu-btn__name">{item.name}</div>
                     <div className="menu-btn__price">₹{item.price}</div>
                   </button>

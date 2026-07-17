@@ -194,7 +194,17 @@ export function MenuPage({ menuItems, onMenuChange }: MenuPageProps) {
                   const realIndex = menuItems.indexOf(item);
                   return (
                     <tr key={item.name + realIndex}>
-                      <td style={{ fontSize: 22 }}>{item.emoji}</td>
+                      <td style={{ verticalAlign: "middle" }}>
+                        {item.emoji.startsWith("/") || item.emoji.startsWith("http") ? (
+                          <img 
+                            src={item.emoji} 
+                            alt={item.name} 
+                            style={{ width: "28px", height: "28px", objectFit: "cover", borderRadius: "6px", display: "inline-block", verticalAlign: "middle" }} 
+                          />
+                        ) : (
+                          <span style={{ fontSize: 22, display: "inline-block", verticalAlign: "middle" }}>{item.emoji}</span>
+                        )}
+                      </td>
                       <td style={{ color: "var(--c-cream)", fontWeight: 500 }}>{item.name}</td>
                       <td>{item.category}</td>
                       <td style={{ color: "var(--c-c200)", fontWeight: 600 }}>₹{item.price}</td>
