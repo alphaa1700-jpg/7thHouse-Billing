@@ -43,8 +43,18 @@ function hasSheetConfig(): boolean {
 }
 
 function parseServiceAccount() {
-  const raw = process.env.GOOGLE_SERVICE_ACCOUNT;
+  let raw = process.env.GOOGLE_SERVICE_ACCOUNT;
   if (!raw) throw new Error("GOOGLE_SERVICE_ACCOUNT env var is missing");
+
+  raw = raw.trim();
+  // Check if base64 encoded (does not start with '{')
+  if (!raw.startsWith("{")) {
+    try {
+      raw = Buffer.from(raw, "base64").toString("utf8").trim();
+    } catch (e) {
+      throw new Error(`Failed to base64-decode GOOGLE_SERVICE_ACCOUNT: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  }
 
   const normalizeJson = (value: string) => value.replace(/\r\n/g, "\n").replace(/\n/g, "\\n");
 
