@@ -27,8 +27,9 @@ export async function POST(req: NextRequest) {
     `☕ *7th House Coffee*\n\n` +
     `Hi ${customerName}! 👋\n\n` +
     `Here's your bill summary:\n` +
-    `🪑 Table ${tableNumber} | Order ${orderId}\n` +
-    `🛒 ${items}\n\n` +
+    `🪑 Table ${tableNumber} | Order ${orderId}\n\n` +
+    `🛒 *Items:*\n` +
+    `${items}\n\n` +
     `💰 *Total: ₹${total}*\n` +
     `(Incl. 5% GST)\n\n` +
     `Thank you for visiting us! 🙏\n` +

@@ -48,14 +48,17 @@ async function sendBillWhatsApp(session: TableSession): Promise<"sent"|"failed">
       const rawPhone = String(session.phone).replace(/\D/g, "");
       const e164 = rawPhone.startsWith("91") ? rawPhone : `91${rawPhone}`;
       
-      const itemsStr = session.items.map(i => `${i.name} ×${i.qty}`).join(", ");
+      const itemsStr = session.items
+        .map(i => `• ${i.name} ×${i.qty} — ₹${i.price * i.qty}`)
+        .join("\n");
       
       const message =
         `☕ *7th House Coffee*\n\n` +
         `Hi ${session.customerName}! 👋\n\n` +
         `Here's your bill summary:\n` +
-        `🪑 Table ${session.tableNumber} | Order ${session.orderId}\n` +
-        `🛒 ${itemsStr}\n\n` +
+        `🪑 Table ${session.tableNumber} | Order ${session.orderId}\n\n` +
+        `🛒 *Items:*\n` +
+        `${itemsStr}\n\n` +
         `💰 *Total: ₹${session.total}*\n` +
         `(Incl. 5% GST)\n\n` +
         `Thank you for visiting us! 🙏\n` +
@@ -79,7 +82,7 @@ async function sendBillWhatsApp(session: TableSession): Promise<"sent"|"failed">
         phone:       session.phone,
         customerName: session.customerName,
         total:       session.total,
-        items:       session.items.map(i => `${i.name} ×${i.qty}`).join(", "),
+        items:       session.items.map(i => `• ${i.name} ×${i.qty} — ₹${i.price * i.qty}`).join("\n"),
         tableNumber: session.tableNumber,
         orderId:     session.orderId,
       }),
