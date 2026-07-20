@@ -197,6 +197,37 @@ export function AdminApp() {
       ]).catch(() => pushNotif("⚠️ Status updated locally but failed to sync"));
     }
   }, [pushNotif]);
+  const handleMoveTable = useCallback(async (fromTableId: string, toTableId: string) => {
+    const currentTables = tablesRef.current;
+    const sourceTable = currentTables.find(t => t.id === fromTableId);
+    const destTable = currentTables.find(t => t.id === toTableId);
+
+    if (!sourceTable || !sourceTable.session || !destTable) return;
+
+    const sessionToMove = {
+      ...sourceTable.session,
+      tableNumber: destTable.number,
+    };
+
+    const nextTables = currentTables.map(t => {
+      if (t.id === fromTableId) {
+        return { ...t, status: "available" as const, session: undefined };
+      }
+      if (t.id === toTableId) {
+        return { ...t, status: sourceTable.status, session: sessionToMove };
+      }
+      return t;
+    });
+
+    setTables(nextTables);
+    pushNotif(`Moved order from Table ${sourceTable.number} to Table ${destTable.number}`);
+
+    try {
+      await api.tables.update(nextTables);
+    } catch {
+      pushNotif("⚠️ Table moved locally but failed to sync");
+    }
+  }, [pushNotif]);
   const handleDeleteOrders = useCallback(async (ids: string[]) => {
     setOrders(prev => prev.filter(o => !ids.includes(o.id)));
     const markDone = (o: Order) => ids.includes(o.id) ? { ...o, status: "Done" as const } : o;
@@ -328,6 +359,7 @@ export function AdminApp() {
                 tables={tables}
                 onClearTable={handleClearTable}
                 onMarkReady={handleMarkReady}
+                onMoveTable={handleMoveTable}
                 onAddItems={(tableId) => { setAddToOrderTableId(tableId); navigate("pos"); }}
                 onNewOrder={(tableId) => { setPreselectedTableId(tableId); navigate("pos"); }}
               />

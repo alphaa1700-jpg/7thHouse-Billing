@@ -10,6 +10,7 @@ interface TablesPageProps {
   onMarkReady: (tableId: string) => void;
   onAddItems:  (tableId: string) => void;
   onNewOrder:  (tableId: string) => void;
+  onMoveTable?: (fromTableId: string, toTableId: string) => void;
 }
 const STATUS_CONFIG = {
   available: { label:"Available", badge:"green"  as const, dot:"var(--c-green)" },
@@ -90,14 +91,27 @@ async function sendBillWhatsApp(session: TableSession): Promise<"sent"|"failed">
     return res.ok ? "sent" : "failed";
   } catch { return "failed"; }
 }
-function SessionDrawer({ table, onClose, onClear, onReady, onAddItems }: {
+function SessionDrawer({ table, allTables, onClose, onClear, onReady, onAddItems, onMoveTable }: {
   table: CafeTable;
+  allTables: CafeTable[];
   onClose: () => void;
   onClear: () => void;
   onReady: () => void;
   onAddItems: () => void;
+  onMoveTable?: (fromTableId: string, toTableId: string) => void;
 }) {
   const [sending, setSending] = useState<"idle"|"sending"|"sent"|"failed">("idle");
+  const [isMoving, setIsMoving] = useState(false);
+  const [selectedDestId, setSelectedDestId] = useState<string>("");
+
+  const availableTables = allTables.filter(t => t.status === "available" && t.id !== table.id);
+
+  const handleConfirmMove = () => {
+    if (!selectedDestId || !onMoveTable) return;
+    onMoveTable(table.id, selectedDestId);
+    onClose();
+  };
+
   const session = table.session;
   const cfg = STATUS_CONFIG[table.status as keyof typeof STATUS_CONFIG] ?? STATUS_CONFIG.available;
   const handleBillPaid = async () => {
@@ -185,10 +199,69 @@ function SessionDrawer({ table, onClose, onClear, onReady, onAddItems }: {
           </div>
           <div className="flex flex-col gap-2">
             {(session.status === "occupied" || session.status === "ready") && (
-              <Button variant="tab" onClick={onAddItems} className="w-full justify-center"
-                style={{ color: "var(--c-c200)", borderColor: "rgba(200,135,74,0.3)" }}>
-                <i className="ti ti-plus mr-1"/>Add More Items
-              </Button>
+              <>
+                <Button variant="tab" onClick={onAddItems} className="w-full justify-center"
+                  style={{ color: "var(--c-c200)", borderColor: "rgba(200,135,74,0.3)" }}>
+                  <i className="ti ti-plus mr-1"/>Add More Items
+                </Button>
+                {!isMoving ? (
+                  <Button
+                    variant="tab"
+                    onClick={() => {
+                      setIsMoving(true);
+                      if (availableTables.length > 0) setSelectedDestId(availableTables[0].id);
+                    }}
+                    className="w-full justify-center"
+                    style={{ color: "var(--c-c200)", borderColor: "rgba(200,135,74,0.3)" }}
+                  >
+                    <i className="ti ti-arrows-left-right mr-1"/>Move to Another Table
+                  </Button>
+                ) : (
+                  <div style={{ padding: "12px", borderRadius: 10, background: "var(--c-bg-700)", border: "1px solid var(--c-bg-500)" }} className="flex flex-col gap-2.5">
+                    <div style={{ fontSize: 13, fontWeight: 600, color: "var(--c-cream)" }}>
+                      Select Destination Table:
+                    </div>
+                    {availableTables.length === 0 ? (
+                      <div style={{ fontSize: 12, color: "var(--c-faint)" }}>
+                        No available tables to move to.
+                      </div>
+                    ) : (
+                      <div className="flex gap-2 flex-wrap">
+                        {availableTables.map(t => (
+                          <button
+                            key={t.id}
+                            type="button"
+                            onClick={() => setSelectedDestId(t.id)}
+                            style={{
+                              padding: "6px 12px",
+                              borderRadius: 6,
+                              fontSize: 12,
+                              fontWeight: 600,
+                              border: "1px solid",
+                              borderColor: selectedDestId === t.id ? "var(--c-c200)" : "var(--c-bg-500)",
+                              background: selectedDestId === t.id ? "rgba(200,135,74,0.2)" : "transparent",
+                              color: selectedDestId === t.id ? "var(--c-c200)" : "var(--c-muted)",
+                              cursor: "pointer"
+                            }}
+                          >
+                            Table {t.number}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    <div className="flex gap-2 mt-1">
+                      {availableTables.length > 0 && (
+                        <Button variant="brew-sm" onClick={handleConfirmMove} className="flex-1 justify-center">
+                          <i className="ti ti-check mr-1"/>Confirm Move
+                        </Button>
+                      )}
+                      <Button variant="tab" onClick={() => setIsMoving(false)} className="justify-center">
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
             {session.status === "occupied" && (
               <Button variant="brew" onClick={onReady} className="w-full justify-center">
@@ -229,7 +302,7 @@ function SessionDrawer({ table, onClose, onClear, onReady, onAddItems }: {
     </div>
   );
 }
-export function TablesPage({ tables, onClearTable, onMarkReady, onAddItems, onNewOrder }: TablesPageProps) {
+export function TablesPage({ tables, onClearTable, onMarkReady, onAddItems, onNewOrder, onMoveTable }: TablesPageProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selectedTable = tables.find(t => t.id === selectedId);
   const stats = {
@@ -284,10 +357,12 @@ export function TablesPage({ tables, onClearTable, onMarkReady, onAddItems, onNe
         {selectedTable && (
           <SessionDrawer
             table={selectedTable}
+            allTables={tables}
             onClose={() => setSelectedId(null)}
             onClear={() => { onClearTable(selectedTable.id); setSelectedId(null); }}
             onReady={() => { onMarkReady(selectedTable.id); }}
             onAddItems={() => { onAddItems(selectedTable.id); setSelectedId(null); }}
+            onMoveTable={onMoveTable}
           />
         )}
       </div>
